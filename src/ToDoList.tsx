@@ -33,12 +33,16 @@ interface IForm {
 }
 
 function ToDoList() {
-  const { register, watch, handleSubmit, formState } = useForm<IForm>({
-    defaultValues: { email: "@naver.com" },
-  });
+  const { register, watch, handleSubmit, formState, setError } = useForm<IForm>(
+    {
+      defaultValues: { email: "@naver.com" },
+    }
+  );
   // console.log(watch());
   const onValid = (data: IForm) => {
-    console.log(data);
+    if (data.password !== data.password1) {
+      setError("password1", { message: "Passwords are not the same" });
+    }
   };
   const onInvalid = (data: any) => {
     console.log(formState.errors);
