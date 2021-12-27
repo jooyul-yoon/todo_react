@@ -30,25 +30,35 @@ interface IForm {
   firstname: string;
   lastname: string;
   email: string;
+  extraError?: string;
 }
 
 function ToDoList() {
-  const { register, watch, handleSubmit, formState, setError } = useForm<IForm>(
-    {
-      defaultValues: { email: "@naver.com" },
-    }
-  );
+  const {
+    register,
+    watch,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm<IForm>({
+    defaultValues: { email: "@naver.com" },
+  });
   // console.log(watch());
   const onValid = (data: IForm) => {
     if (data.password !== data.password1) {
-      setError("password1", { message: "Passwords are not the same" });
+      setError(
+        "password1",
+        { message: "Passwords are not the same" },
+        { shouldFocus: true }
+      );
+      // setError("extraError", { message: "server offline" });
     }
+    console.log(data);
   };
   const onInvalid = (data: any) => {
-    console.log(formState.errors);
+    console.log(errors);
   };
-  const { errors } = formState;
-  // console.log(watch());
+  console.log(watch());
   return (
     <div>
       <form
@@ -57,35 +67,41 @@ function ToDoList() {
       >
         <input
           {...register("username", {
-            required: true,
+            required: "write here",
             minLength: { value: 10, message: "Username is too short" },
           })}
           placeholder="username"
         />
         <span>{errors?.username?.message}</span>
         <input
-          {...register("password", { required: true })}
+          {...register("password", { required: "write here" })}
           placeholder="password"
         />
         <span>{errors?.password?.message}</span>
         <input
-          {...register("password1", { required: true })}
+          {...register("password1", { required: "write here" })}
           placeholder="password1"
         />
         <span>{errors?.password1?.message}</span>
         <input
-          {...register("firstname", { required: true })}
+          {...register("firstname", {
+            required: "write here",
+            validate: {
+              noNico: (value) => !value.includes("nico") || "no nico allowed",
+              noNick: (value) => !value.includes("nick") || "no nick allowed",
+            },
+          })}
           placeholder="first name"
         />
         <span>{errors?.firstname?.message}</span>
         <input
-          {...register("lastname", { required: true })}
+          {...register("lastname", { required: "write here" })}
           placeholder="last name"
         />
         <span>{errors?.lastname?.message}</span>
         <input
           {...register("email", {
-            required: true,
+            required: "write here",
             pattern: {
               value: /^[A-Za-z0-9._%+-]+@naver.com$/,
               message: "Use Naver Email",
