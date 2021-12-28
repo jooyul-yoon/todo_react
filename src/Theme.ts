@@ -4,7 +4,7 @@ export const darkTheme: DefaultTheme = {
   bgColor: "#4079ac",
   titleColor: "whitesmoke",
   textColor: "whitesmoke",
-  accentColor: "#ff7979a9",
+  accentColor: "#ffc1c1",
   tabBgColor: "rgb(170, 180, 210, 1)",
   cardColor: "rgb(0,0,0,0.6)",
   greenColor: "#00ff00",
