@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { categoryAtom, IToDo, toDoState } from "../atoms";
 
 interface IForm {
@@ -8,7 +8,7 @@ interface IForm {
 
 function CreateToDo() {
   // Recoil
-  const setToDos = useSetRecoilState(toDoState);
+  const [toDos, setToDos] = useRecoilState(toDoState);
   const category = useRecoilValue(categoryAtom);
 
   // React-Hook-Form
@@ -18,8 +18,9 @@ function CreateToDo() {
       { text: toDo, id: Date.now(), category: category as IToDo["category"] },
       ...prev,
     ]);
-    setValue("toDo", "");
+    setValue("toDo", ""); // Make empty textfield after input
   };
+  localStorage.setItem("toDos", JSON.stringify(toDos));
 
   return (
     <form onSubmit={handleSubmit(handleValid)}>
