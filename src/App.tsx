@@ -1,5 +1,4 @@
 import { createGlobalStyle } from "styled-components";
-import ToDoList from "./components/ToDoList";
 import Router from "./Router";
 
 const GlobalStyle = createGlobalStyle`

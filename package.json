@@ -57,5 +57,5 @@
     "@types/react-router-dom": "^5.3.2",
     "@types/styled-components": "^5.1.18"
   },
-  "homepage": "https://jooyul-yoon.github.io/react_master"
+  "homepage": "https://jooyul-yoon.github.io/todo"
 }

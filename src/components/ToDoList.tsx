@@ -4,6 +4,7 @@ import styled from "styled-components";
 import CreateToDo from "./CreateToDo";
 import { Categories, categoryAtom, toDoSelector } from "../atoms";
 import ToDo from "./ToDo";
+import Navigator from "./Navigator";
 
 const Container = styled.div`
   display: flex;
@@ -11,10 +12,10 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   width: 400px;
-  margin: 0 auto;
+  margin: 20px auto;
 `;
 const Header = styled.div`
-  margin: 10px auto;
+  margin-bottom: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -22,7 +23,6 @@ const Header = styled.div`
   width: 100%;
   h1 {
     font-size: 30px;
-    color: ${(props) => props.theme.accentColor};
   }
   Select {
     background: ${(props) => props.theme.cardColor};
@@ -52,22 +52,25 @@ function ToDoList() {
   };
 
   return (
-    <Container>
-      <Header>
-        <h1>All</h1>
-        <select value={category} onInput={onInput}>
-          <option value={Categories.To_Do}>To Do</option>
-          <option value={Categories.Doing}>Doing</option>
-          <option value={Categories.Done}>Done</option>
-        </select>
-      </Header>
-      <CreateToDo />
-      <ToDoListContainer>
-        {toDos?.map((toDo) => (
-          <ToDo key={toDo.id} {...toDo} />
-        ))}
-      </ToDoListContainer>
-    </Container>
+    <>
+      <Navigator />
+      <Container>
+        <Header>
+          <h1>To-Do List</h1>
+          <select value={category} onInput={onInput}>
+            <option value={Categories.To_Do}>To Do</option>
+            <option value={Categories.Doing}>Doing</option>
+            <option value={Categories.Done}>Done</option>
+          </select>
+        </Header>
+        <CreateToDo />
+        <ToDoListContainer>
+          {toDos?.map((toDo) => (
+            <ToDo key={toDo.id} {...toDo} />
+          ))}
+        </ToDoListContainer>
+      </Container>
+    </>
   );
 }
 
