@@ -8,7 +8,7 @@ import { darkTheme, lightTheme } from "./Theme";
 ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>
-      <ThemeProvider theme={lightTheme}>
+      <ThemeProvider theme={darkTheme}>
         <App />
       </ThemeProvider>
     </RecoilRoot>
