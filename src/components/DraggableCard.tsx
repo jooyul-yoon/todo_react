@@ -1,3 +1,4 @@
+import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { IToDo } from "../atoms";
@@ -17,7 +18,6 @@ interface ICardProps {
 }
 
 function DraggableCard({ toDo, index }: ICardProps) {
-  console.log(toDo, "has been rendered");
   return (
     <Draggable key={toDo.id} draggableId={toDo.id.toString()} index={index}>
       {(magic) => (
@@ -33,4 +33,4 @@ function DraggableCard({ toDo, index }: ICardProps) {
   );
 }
 
-export default DraggableCard;
+export default React.memo(DraggableCard);
