@@ -1,12 +1,8 @@
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DropResult,
-} from "react-beautiful-dnd";
+import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { Categories, toDoState } from "../atoms";
+import DraggableCard from "./DraggableCard";
 import Navigator from "./Navigator";
 
 const Wrapper = styled.div`
@@ -28,14 +24,6 @@ const Board = styled.ul`
   padding: 5px;
   border-radius: 5px;
   min-height: 100px;
-`;
-const Card = styled.li`
-  display: flex;
-  background-color: ${(props) => props.theme.cardColor};
-  width: 100%;
-  margin: 2px 0;
-  padding: 5px;
-  border-radius: 5px;
 `;
 function Trello() {
   const [toDos, setToDos] = useRecoilState(toDoState);
@@ -64,21 +52,7 @@ function Trello() {
               {(magic) => (
                 <Board ref={magic.innerRef} {...magic.droppableProps}>
                   {toDos.map((toDo, index) => (
-                    <Draggable
-                      key={toDo.id}
-                      draggableId={toDo.id.toString()}
-                      index={index}
-                    >
-                      {(magic) => (
-                        <Card
-                          ref={magic.innerRef}
-                          {...magic.draggableProps}
-                          {...magic.dragHandleProps}
-                        >
-                          {toDo.text}
-                        </Card>
-                      )}
-                    </Draggable>
+                    <DraggableCard key={toDo.id} toDo={toDo} index={index} />
                   ))}
                   {magic.placeholder /* List Size stays */}
                 </Board>
