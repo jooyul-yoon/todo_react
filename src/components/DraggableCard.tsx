@@ -18,6 +18,7 @@ interface ICardProps {
 }
 
 function DraggableCard({ toDo, index }: ICardProps) {
+  console.log(toDo.text, "has been rendered");
   return (
     <Draggable key={toDo.id} draggableId={toDo.id.toString()} index={index}>
       {(magic) => (
