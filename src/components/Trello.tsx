@@ -48,7 +48,7 @@ function Trello() {
       <DragDropContext onDragEnd={onDragEnd}>
         <Wrapper>
           {Object.keys(Categories).map((category) => (
-            <Board key={category} toDos={toDos} boardId={category} />
+            <Board key={category} toDos={toDos} boardCategory={category} />
           ))}
         </Wrapper>
       </DragDropContext>
