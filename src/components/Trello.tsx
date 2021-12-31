@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { Categories, IToDo, toDoState } from "../atoms";
 import Board from "./Board";
 import Navigator from "./Navigator";
+import Trash from "./Trash";
 
 const Wrapper = styled.div`
   background-color: ${(props) => props.theme.bgColor};
@@ -14,12 +15,28 @@ const Wrapper = styled.div`
 `;
 function Trello() {
   const [toDos, setToDos] = useRecoilState(toDoState);
-  const onDragEnd = ({ destination, source, draggableId }: DropResult) => {
+  const onDragEnd = (info: DropResult) => {
+    const { destination, source, draggableId } = info;
+    console.log(info);
     if (destination == null) return;
-    // Set source, destination index
+
+    // find source index
     const srcIndex = toDos.findIndex(
       (toDo) => toDo.id.toString() === draggableId
     );
+
+    // if dropped into trashcan, delete To Do
+    if (destination.droppableId === "delete") {
+      setToDos((oldToDos) => {
+        return [
+          ...oldToDos.slice(0, srcIndex),
+          ...oldToDos.slice(srcIndex + 1),
+        ];
+      });
+      return;
+    }
+
+    // find destination index
     const dstToDo = toDos.filter(
       (toDos) => toDos.category === destination.droppableId
     )[destination.index];
@@ -51,6 +68,7 @@ function Trello() {
             <Board key={category} toDos={toDos} boardCategory={category} />
           ))}
         </Wrapper>
+        <Trash />
       </DragDropContext>
     </>
   );
