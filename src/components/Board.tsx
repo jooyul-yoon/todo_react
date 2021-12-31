@@ -2,6 +2,7 @@ import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { IToDo } from "../atoms";
 import DraggableCard from "./DraggableCard";
+import { useRef } from "react";
 
 interface IArea {
   isDraggingOver: Boolean;
@@ -40,9 +41,18 @@ interface IBoardProps {
 }
 
 function Board({ toDos, boardCategory }: IBoardProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const onClick = () => {
+    inputRef.current?.focus();
+    setTimeout(() => {
+      inputRef.current?.blur();
+    }, 5000);
+  };
   return (
     <Wrapper>
       <Title>{boardCategory}</Title>
+      <input ref={inputRef} placeholder="Grabme" />
+      <button onClick={onClick}>Click me</button>
       <Droppable droppableId={boardCategory}>
         {(magic, snapshot) => (
           <DropArea
