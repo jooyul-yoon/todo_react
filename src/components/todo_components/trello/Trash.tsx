@@ -28,16 +28,12 @@ const Trashcan = styled.div`
   transition: background-color 0.3s, width 0.3s, height 0.3s, border-radius 0.3s;
   img {
     max-width: 30px;
-    transition: max-width 0.3s;
   }
   :hover {
     background-color: pink;
     width: 60px;
     height: 60px;
     border-radius: 30px;
-    img {
-      max-width: 36px;
-    }
   }
 `;
 
