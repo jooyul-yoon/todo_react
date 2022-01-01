@@ -1,6 +1,6 @@
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
-import { IToDo, toDoState } from "../atoms";
+import { IToDo, toDoState } from "../../../atoms";
 import DraggableCard from "./DraggableCard";
 import { useForm } from "react-hook-form";
 import React from "react";

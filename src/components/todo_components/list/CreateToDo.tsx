@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { categoryAtom, IToDo, toDoState } from "../atoms";
+import { categoryAtom, IToDo, toDoState } from "../../../atoms";
 
 const AddContainer = styled.div`
   display: flex;

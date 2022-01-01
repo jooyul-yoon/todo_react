@@ -1,6 +1,6 @@
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { Categories, IToDo, toDoState } from "../atoms";
+import { Categories, IToDo, toDoState } from "../../../atoms";
 
 const ToDoCard = styled.li`
   display: flex;

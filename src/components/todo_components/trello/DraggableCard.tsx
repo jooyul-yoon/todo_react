@@ -1,7 +1,7 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
-import { Categories } from "../atoms";
+import { Categories } from "../../../atoms";
 
 const Card = styled.li<{ isDragging: Boolean }>`
   display: flex;

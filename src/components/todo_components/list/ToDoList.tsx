@@ -2,9 +2,9 @@ import React from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import CreateToDo from "./CreateToDo";
-import { Categories, categoryAtom, toDoSelector } from "../atoms";
+import { Categories, categoryAtom, toDoSelector } from "../../../atoms";
 import ToDo from "./ToDo";
-import Navigator from "./Navigator";
+import Navigator from "../../Navigator";
 
 const Container = styled.div`
   display: flex;

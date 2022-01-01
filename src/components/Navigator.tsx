@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import TableIcon from "../icons/0cells.png";
-import TaskIcon from "../icons/0list-text.png";
-import logo from "../icons/logo.svg";
+import TableIcon from "../img/table.png";
+import TaskIcon from "../img/task.png";
+import logo from "../img/logo.svg";
 
 const Header = styled.header`
   background-color: #fff;

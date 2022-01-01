@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import ToDoList from "./components/ToDoList";
-import Trello from "./components/Trello";
+import ToDoList from "./components/todo_components/list/ToDoList";
+import Trello from "./components/todo_components/trello/Trello";
 
 function Router() {
   return (

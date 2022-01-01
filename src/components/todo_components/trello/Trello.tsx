@@ -2,16 +2,16 @@ import React from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { Categories, IToDo, toDoState } from "../atoms";
+import { Categories, IToDo, toDoState } from "../../../atoms";
 import Board from "./Board";
-import Navigator from "./Navigator";
+import Navigator from "../../Navigator";
 import Trash from "./Trash";
 
 const Wrapper = styled.div`
   background-color: ${(props) => props.theme.bgColor};
   display: flex;
   justify-content: center;
-  margin: 30px auto;
+  margin: 20px auto;
 `;
 function Trello() {
   const [toDos, setToDos] = useRecoilState(toDoState);
