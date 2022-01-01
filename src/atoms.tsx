@@ -2,8 +2,8 @@ import { atom, selector } from "recoil";
 
 /* To Do List */
 export enum Categories {
+  "All" = "All",
   "To_Do" = "To_Do",
-  "Doing" = "Doing",
   "Done" = "Done",
 }
 export interface IToDo {
@@ -27,7 +27,8 @@ export const toDoSelector = selector({
   get: ({ get }) => {
     const toDos = get(toDoState);
     const category = get(categoryAtom);
-    return toDos.filter((toDo) => toDo.category === category);
+    if (category === Categories.All) return toDos;
+    else return toDos.filter((toDo) => toDo.category === category);
   },
 });
 

@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { categoryAtom, IToDo, toDoState } from "../../../atoms";
+import { Categories, toDoState } from "../../../atoms";
 
 const AddContainer = styled.div`
   display: flex;
@@ -37,23 +37,23 @@ interface IForm {
 function CreateToDo() {
   // Recoil
   const [toDos, setToDos] = useRecoilState(toDoState);
-  const category = useRecoilValue(categoryAtom);
 
   // React-Hook-Form
-  const { register, handleSubmit, setValue } = useForm<IForm>();
-  const handleValid = ({ toDo }: IForm) => {
+  const { register, handleSubmit, setValue, formState } = useForm<IForm>();
+  const onValid = ({ toDo }: IForm) => {
     setToDos((prev) => [
       ...prev,
-      { text: toDo, id: Date.now(), category: category as IToDo["category"] },
+      { text: toDo, id: Date.now(), category: Categories.To_Do },
     ]);
     setValue("toDo", ""); // Make empty textfield after input
   };
+  const onInvalid = () => console.log(formState.errors);
   localStorage.setItem("toDos", JSON.stringify(toDos));
 
   return (
     <AddContainer>
       <AddBtn>+</AddBtn>
-      <form onSubmit={handleSubmit(handleValid)}>
+      <form onSubmit={handleSubmit(onValid, onInvalid)}>
         <AddInput
           {...register("toDo", {
             required: "Please write a to do",

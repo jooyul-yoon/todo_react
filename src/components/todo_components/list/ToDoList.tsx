@@ -1,11 +1,15 @@
 import React from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import CreateToDo from "./CreateToDo";
 import { Categories, categoryAtom, toDoSelector } from "../../../atoms";
 import ToDo from "./ToDo";
 import Navigator from "../../Navigator";
+import Sidebar from "./Sidebar";
 
+const Wrapper = styled.div`
+  display: flex;
+`;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -45,33 +49,36 @@ const ToDoListContainer = styled.ul`
 `;
 
 function ToDoList() {
-  const [category, setCategory] = useRecoilState(categoryAtom);
+  const category = useRecoilValue(categoryAtom);
   const toDos = useRecoilValue(toDoSelector);
-  const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
-    setCategory(event.currentTarget.value as Categories);
-  };
+  // const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
+  //   setCategory(event.currentTarget.value as Categories);
+  // };
 
   return (
     <>
       <Navigator />
-      <Container>
-        <Header>
-          <h1>To-Do List</h1>
-          <select value={category} onInput={onInput}>
-            <option value={Categories.To_Do}>To Do</option>
-            <option value={Categories.Doing}>Doing</option>
-            <option value={Categories.Done}>Done</option>
-          </select>
-        </Header>
-        <CreateToDo />
-        <ToDoListContainer>
-          {toDos?.map((toDo) => (
-            <ToDo key={toDo.id} {...toDo} />
-          ))}
-        </ToDoListContainer>
-      </Container>
+      <Wrapper>
+        <Sidebar />
+        <Container>
+          <Header>
+            <h1>{category === Categories.To_Do ? "To Do" : category}</h1>
+            {/* <select value={category} onInput={onInput}>
+              <option value={Categories.To_Do}>To Do</option>
+              <option value={Categories.Doing}>Doing</option>
+              <option value={Categories.Done}>Done</option>
+            </select> */}
+          </Header>
+          <CreateToDo />
+          <ToDoListContainer>
+            {toDos?.map((toDo) => (
+              <ToDo key={toDo.id} {...toDo} />
+            ))}
+          </ToDoListContainer>
+        </Container>
+      </Wrapper>
     </>
   );
 }
 
-export default ToDoList;
+export default React.memo(ToDoList);

@@ -63,15 +63,7 @@ function ToDo({ text, category, id }: IToDo) {
             To Do
           </button>
         )}
-        {category !== Categories.Doing && (
-          <button
-            name={Categories.Doing}
-            onClick={() => onClick(Categories.Doing)}
-          >
-            Doing
-          </button>
-        )}
-        {category !== Categories.Done && (
+        {category === Categories.To_Do && (
           <button
             name={Categories.Done}
             onClick={() => onClick(Categories.Done)}
