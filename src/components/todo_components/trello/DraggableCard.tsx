@@ -1,7 +1,6 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
-import { Categories } from "../../../atoms";
 
 const Card = styled.li<{ isDragging: Boolean }>`
   display: flex;
@@ -17,7 +16,7 @@ const Card = styled.li<{ isDragging: Boolean }>`
 interface ICardProps {
   id: number;
   toDo: string;
-  category: Categories;
+  category: string;
   index: number;
 }
 

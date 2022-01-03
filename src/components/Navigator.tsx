@@ -12,6 +12,7 @@ const Header = styled.header`
   top: 0;
   z-index: 100;
   padding: 0 10vw;
+  transition: 0.5s;
 `;
 const NavContainer = styled.nav`
   display: flex;

@@ -2,7 +2,7 @@ import React from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import CreateToDo from "./CreateToDo";
-import { Categories, categoryAtom, toDoSelector } from "../../../atoms";
+import { categoryAtom, toDoSelector } from "../../../atoms";
 import ToDo from "./ToDo";
 import Navigator from "../../Navigator";
 import Sidebar from "./Sidebar";
@@ -13,10 +13,10 @@ const Wrapper = styled.div`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   width: 400px;
   margin: 20px auto;
+  min-height: 100vh;
 `;
 const Header = styled.div`
   margin-bottom: 10px;
@@ -44,7 +44,6 @@ const ToDoListContainer = styled.ul`
   flex-direction: column;
   align-items: left;
   width: 100%;
-  height: 250px;
   margin: 10px 0;
 `;
 
@@ -54,7 +53,7 @@ function ToDoList() {
   // const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
   //   setCategory(event.currentTarget.value as Categories);
   // };
-
+  console.log(toDos);
   return (
     <>
       <Navigator />
@@ -62,7 +61,7 @@ function ToDoList() {
         <Sidebar />
         <Container>
           <Header>
-            <h1>{category === Categories.To_Do ? "To Do" : category}</h1>
+            <h1>{category}</h1>
             {/* <select value={category} onInput={onInput}>
               <option value={Categories.To_Do}>To Do</option>
               <option value={Categories.Doing}>Doing</option>
@@ -71,9 +70,11 @@ function ToDoList() {
           </Header>
           <CreateToDo />
           <ToDoListContainer>
-            {toDos?.map((toDo) => (
-              <ToDo key={toDo.id} {...toDo} />
-            ))}
+            {toDos
+              ? toDos.map((toDo) => {
+                  return <ToDo key={toDo.id} {...toDo} />;
+                })
+              : null}
           </ToDoListContainer>
         </Container>
       </Wrapper>

@@ -1,6 +1,6 @@
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { Categories, IToDo, toDoState } from "../../../atoms";
+import { categoryAtom, IToDo, toDoState } from "../../../atoms";
 
 const ToDoCard = styled.li`
   display: flex;
@@ -11,6 +11,7 @@ const ToDoCard = styled.li`
   padding: 10px 5px;
   border-radius: 5px;
   font-size: 13px;
+  height: 70px;
   span {
     margin-left: 10px;
     color: ${(props) => props.theme.textColor};
@@ -24,55 +25,72 @@ const ToDoCard = styled.li`
     cursor: pointer;
   }
 `;
-const BtnContainer = styled.div``;
+const BtnContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+const SelectStyle = styled.select`
+  margin-bottom: 10px;
+  background-color: transparent;
+  color: white;
+  border: none;
+`;
+function ToDo({ text, id }: IToDo) {
+  const [toDos, setToDos] = useRecoilState(toDoState);
+  const currCat = useRecoilValue(categoryAtom);
 
-function ToDo({ text, category, id }: IToDo) {
-  const setToDos = useSetRecoilState(toDoState);
-
-  const onClick = (newCategory: IToDo["category"]) => {
+  const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
+    const newCat = event.currentTarget.value;
     setToDos((oldToDos) => {
-      const targetIndex = oldToDos.findIndex((toDo) => toDo.id === id);
-      const newToDo = { text, id, category: newCategory as IToDo["category"] };
-      return [
-        ...oldToDos.slice(0, targetIndex),
-        newToDo,
-        ...oldToDos.slice(targetIndex + 1),
-      ];
+      const toDosFrom = oldToDos[currCat];
+      const toDosTo = oldToDos[newCat];
+      const targetIndex = toDosFrom.findIndex((toDo) => toDo.id === id);
+      const newToDo: IToDo = { id, text };
+
+      return {
+        ...oldToDos,
+        [currCat]: [
+          ...toDosFrom.slice(0, targetIndex),
+          ...toDosFrom.slice(targetIndex + 1),
+        ],
+        [newCat]: [...toDosTo, newToDo],
+      };
     });
   };
-
   const onDelete = () => {
     setToDos((oldToDos) => {
-      const targetIndex = oldToDos.findIndex((toDo) => toDo.id === id);
-      return [
-        ...oldToDos.slice(0, targetIndex),
-        ...oldToDos.slice(targetIndex + 1),
-      ];
+      Object.keys(oldToDos).forEach((cat) => {
+        const targetIndex = oldToDos[cat].findIndex((toDo) => toDo.id === id);
+        // console.log(cat, targetIndex);
+        if (targetIndex !== -1) {
+          oldToDos = {
+            ...oldToDos,
+            [cat]: [
+              ...oldToDos[cat].slice(0, targetIndex),
+              ...oldToDos[cat].slice(targetIndex + 1),
+            ],
+          };
+        }
+      });
+      return oldToDos;
     });
   };
 
   return (
     <ToDoCard>
       <span>{text}</span>
-      <BtnContainer>
-        {category !== Categories.To_Do && (
-          <button
-            name={Categories.To_Do}
-            onClick={() => onClick(Categories.To_Do)}
-          >
-            To Do
-          </button>
-        )}
-        {category === Categories.To_Do && (
-          <button
-            name={Categories.Done}
-            onClick={() => onClick(Categories.Done)}
-          >
-            Done
-          </button>
-        )}
-        <button onClick={onDelete}>Delete</button>
-      </BtnContainer>
+      {currCat === "All" ? null : (
+        <BtnContainer>
+          <SelectStyle onInput={onInput}>
+            <option>Select</option>
+            {Object.keys(toDos).map((newCat) => {
+              if (newCat === "All" || newCat === currCat) return null;
+              return <option value={newCat}>{newCat}</option>;
+            })}
+          </SelectStyle>
+          <button onClick={onDelete}>Delete</button>
+        </BtnContainer>
+      )}
     </ToDoCard>
   );
 }

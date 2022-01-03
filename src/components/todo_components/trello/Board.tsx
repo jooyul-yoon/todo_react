@@ -63,16 +63,20 @@ interface IBoardProps {
 function Board({ toDos, boardCategory }: IBoardProps) {
   const setToDos = useSetRecoilState(toDoState);
   const { register, setValue, handleSubmit } = useForm<IToDo>();
-  const onValid = ({ text }: IToDo) => {
+  const onValid = ({ text }: any) => {
+    console.log(text);
     setValue("text", "");
-    setToDos((prev) => [
+    setToDos(
+      (prev) => prev
+      /* [
       ...prev,
       {
         id: Date.now(),
         text,
         category: boardCategory as IToDo["category"],
       },
-    ]);
+    ] */
+    );
   };
   return (
     <Wrapper>
@@ -92,7 +96,7 @@ function Board({ toDos, boardCategory }: IBoardProps) {
             ref={magic.innerRef}
             {...magic.droppableProps}
           >
-            {toDos
+            {/* {toDos
               .filter((toDo) => toDo.category === boardCategory)
               .map((toDo, index) => (
                 <DraggableCard
@@ -102,7 +106,7 @@ function Board({ toDos, boardCategory }: IBoardProps) {
                   category={toDo.category}
                   index={index}
                 />
-              ))}
+              ))} */}
             {magic.placeholder /* List Size stays */}
           </DropArea>
         )}
