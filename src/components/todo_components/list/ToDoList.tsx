@@ -53,7 +53,7 @@ function ToDoList() {
   // const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
   //   setCategory(event.currentTarget.value as Categories);
   // };
-  console.log(toDos);
+  // console.log(toDos);
   return (
     <>
       <Navigator />

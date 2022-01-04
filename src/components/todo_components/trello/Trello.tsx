@@ -16,53 +16,90 @@ const Wrapper = styled.div`
 function Trello() {
   const [toDos, setToDos] = useRecoilState(toDoState);
   const onDragEnd = (info: DropResult) => {
-    // const { destination, source, draggableId } = info;
-    // console.log(info);
-    // if (destination == null) return;
-    // // find source index
-    // const srcIndex = toDos.findIndex(
-    //   (toDo) => toDo.id.toString() === draggableId
-    // );
-    // // if dropped into trashcan, delete To Do
-    // if (destination.droppableId === "delete") {
-    //   setToDos((oldToDos) => {
-    //     return [
-    //       ...oldToDos.slice(0, srcIndex),
-    //       ...oldToDos.slice(srcIndex + 1),
-    //     ];
-    //   });
-    //   return;
-    // }
-    // // find destination index
-    // const dstToDo = toDos.filter(
-    //   (toDos) => toDos.category === destination.droppableId
-    // )[destination.index];
-    // let dstIndex = toDos.findIndex((toDo) => toDo === dstToDo);
-    // if (srcIndex < dstIndex && dstToDo.category === source.droppableId)
-    //   dstIndex += 1;
-    // if (srcIndex < dstIndex) dstIndex -= 1;
-    // setToDos((oldToDos) => {
-    //   const copyToDos = [...oldToDos];
-    //   if (dstIndex !== null) {
-    //     const [srcToDo] = copyToDos.splice(srcIndex, 1)!;
-    //     const toDo: IToDo = {
-    //       text: srcToDo.text,
-    //       id: Date.now(),
-    //       category: destination.droppableId as IToDo["category"],
-    //     };
-    //     copyToDos.splice(dstIndex, 0, toDo);
-    //   }
-    //   return [...copyToDos];
-    // });
+    console.log(info);
+    const { destination, source, draggableId } = info;
+    if (destination == null) return;
+
+    // Define Categories and index
+    const srcCategory = source.droppableId;
+    const dstCategory = destination.droppableId;
+    const srcIndex = source.index;
+    const dstIndex = destination.index;
+
+    // if dropped into trashcan, delete To Do
+    if (dstCategory === "delete") {
+      setToDos((oldToDos) => {
+        Object.keys(oldToDos).forEach((cat) => {
+          const targetIndex = oldToDos[cat].findIndex(
+            (toDo) => toDo.id === Number(draggableId)
+          );
+          console.log(cat, targetIndex);
+          if (targetIndex !== -1) {
+            oldToDos = {
+              ...oldToDos,
+              [cat]: [
+                ...oldToDos[cat].slice(0, targetIndex),
+                ...oldToDos[cat].slice(targetIndex + 1),
+              ],
+            };
+          }
+        });
+        return { ...oldToDos };
+      });
+    } else if (srcCategory !== dstCategory) {
+      setToDos((oldToDos) => {
+        const toDo: IToDo = {
+          id: Number(draggableId),
+          text: oldToDos[srcCategory][srcIndex].text,
+        };
+        const copyToDos = {
+          ...oldToDos,
+          [srcCategory]: [
+            ...oldToDos[srcCategory].slice(0, srcIndex),
+            ...oldToDos[srcCategory].slice(srcIndex + 1),
+          ],
+          [dstCategory]: [
+            ...oldToDos[dstCategory].slice(0, dstIndex),
+            toDo,
+            ...oldToDos[dstCategory].slice(dstIndex),
+          ],
+        };
+        return { ...copyToDos };
+      });
+    } else {
+      setToDos((oldToDos) => {
+        const toDo: IToDo = {
+          id: Date.now(),
+          text: oldToDos[srcCategory][srcIndex].text,
+        };
+        let copyToDos = {
+          ...oldToDos,
+          [srcCategory]: [
+            ...oldToDos[srcCategory].slice(0, srcIndex),
+            ...oldToDos[srcCategory].slice(srcIndex + 1),
+          ],
+        };
+        copyToDos = {
+          ...copyToDos,
+          [dstCategory]: [
+            ...copyToDos[dstCategory].slice(0, dstIndex),
+            toDo,
+            ...copyToDos[dstCategory].slice(dstIndex),
+          ],
+        };
+        return { ...copyToDos };
+      });
+    }
   };
   return (
     <>
       <Navigator />
       <DragDropContext onDragEnd={onDragEnd}>
         <Wrapper>
-          {/* {Object.keys(Categories).map((category) => (
-            <Board key={category} toDos={toDos} boardCategory={category} />
-          ))} */}
+          {Object.keys(toDos).map((category) => {
+            if (category === "All") return null;
+            return <Board key={category} boardCategory={category} />;
+          })}
         </Wrapper>
         <Trash />
       </DragDropContext>

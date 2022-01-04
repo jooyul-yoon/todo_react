@@ -16,7 +16,6 @@ const Card = styled.li<{ isDragging: Boolean }>`
 interface ICardProps {
   id: number;
   toDo: string;
-  category: string;
   index: number;
 }
 

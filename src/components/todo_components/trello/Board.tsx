@@ -4,7 +4,7 @@ import { IToDo, toDoState } from "../../../atoms";
 import DraggableCard from "./DraggableCard";
 import { useForm } from "react-hook-form";
 import React from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 interface IArea {
   isDraggingOver: Boolean;
@@ -57,27 +57,24 @@ const Form = styled.form`
   }
 `;
 interface IBoardProps {
-  toDos: IToDo[];
   boardCategory: string;
 }
-function Board({ toDos, boardCategory }: IBoardProps) {
-  const setToDos = useSetRecoilState(toDoState);
+
+function Board({ boardCategory }: IBoardProps) {
+  const [toDos, setToDos] = useRecoilState(toDoState);
   const { register, setValue, handleSubmit } = useForm<IToDo>();
   const onValid = ({ text }: any) => {
-    console.log(text);
+    const newToDo: IToDo = { id: Date.now(), text };
     setValue("text", "");
-    setToDos(
-      (prev) => prev
-      /* [
-      ...prev,
-      {
-        id: Date.now(),
-        text,
-        category: boardCategory as IToDo["category"],
-      },
-    ] */
-    );
+    setToDos((prev) => {
+      return {
+        ...prev,
+        All: [...prev["All"], newToDo],
+        [boardCategory]: [...prev[boardCategory], newToDo],
+      };
+    });
   };
+  console.log(toDos);
   return (
     <Wrapper>
       <Title>{boardCategory}</Title>
@@ -96,17 +93,14 @@ function Board({ toDos, boardCategory }: IBoardProps) {
             ref={magic.innerRef}
             {...magic.droppableProps}
           >
-            {/* {toDos
-              .filter((toDo) => toDo.category === boardCategory)
-              .map((toDo, index) => (
-                <DraggableCard
-                  key={toDo.id}
-                  id={toDo.id}
-                  toDo={toDo.text}
-                  category={toDo.category}
-                  index={index}
-                />
-              ))} */}
+            {toDos[boardCategory].map((toDo, index) => (
+              <DraggableCard
+                key={toDo.id}
+                id={toDo.id}
+                toDo={toDo.text}
+                index={index}
+              />
+            ))}
             {magic.placeholder /* List Size stays */}
           </DropArea>
         )}
