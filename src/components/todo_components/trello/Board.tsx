@@ -74,7 +74,8 @@ function Board({ boardCategory }: IBoardProps) {
       };
     });
   };
-  console.log(toDos);
+  localStorage.setItem("toDos", JSON.stringify(toDos));
+
   return (
     <Wrapper>
       <Title>{boardCategory}</Title>
