@@ -11,7 +11,7 @@ const ToDoCard = styled.li`
   padding: 10px 5px;
   border-radius: 5px;
   font-size: 13px;
-  height: 70px;
+  height: 50px;
   span {
     margin-left: 10px;
     color: ${(props) => props.theme.textColor};
@@ -21,16 +21,18 @@ const ToDoCard = styled.li`
     background: transparent;
     border: none;
     color: ${(props) => props.theme.textColor};
-    font-size: 10px;
     cursor: pointer;
+    padding-right: 14px;
+    text-align: right;
   }
 `;
 const BtnContainer = styled.div`
   display: flex;
-  flex-direction: column;
 `;
 const SelectStyle = styled.select`
-  margin-bottom: 10px;
+  text-align: right;
+  outline: none;
+  /* margin-bottom: 5px; */
   background-color: transparent;
   color: white;
   border: none;

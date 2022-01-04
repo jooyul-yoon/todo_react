@@ -8,10 +8,20 @@ import Navigator from "../../Navigator";
 import Trash from "./Trash";
 
 const Wrapper = styled.div`
-  background-color: ${(props) => props.theme.bgColor};
+  background-color: ${(props) => props.theme.cardColor};
   display: flex;
-  justify-content: center;
-  margin: 20px auto;
+  border-radius: 15px;
+  margin: 20px;
+  padding: 20px;
+  overflow-x: auto;
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+  }
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 function Trello() {
   const [toDos, setToDos] = useRecoilState(toDoState);
