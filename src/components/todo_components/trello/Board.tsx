@@ -56,6 +56,20 @@ const Form = styled.form`
     }
   }
 `;
+const BoardRemoveBtn = styled.button`
+  width: 100%;
+  background-color: transparent;
+  color: transparent;
+  border: none;
+  border-radius: inherit;
+  padding: 5px 0;
+  transition: 0.5s;
+  font-weight: bold;
+  :hover {
+    background-color: ${(props) => props.theme.accentColor};
+    color: ${(props) => props.theme.cardColor};
+  }
+`;
 interface IBoardProps {
   boardCategory: string;
 }
@@ -72,6 +86,17 @@ function Board({ boardCategory }: IBoardProps) {
         All: [...prev["All"], newToDo],
         [boardCategory]: [...prev[boardCategory], newToDo],
       };
+    });
+  };
+  const deleteCategory = (deleteCat: string) => {
+    setToDos((oldToDos) => {
+      let copyToDos = {};
+      Object.keys(oldToDos).forEach((cat) => {
+        if (cat !== deleteCat)
+          copyToDos = { ...copyToDos, [cat]: [] as IToDo[] };
+      });
+      console.log("CT", Object.keys(copyToDos));
+      return { ...copyToDos };
     });
   };
   localStorage.setItem("toDos", JSON.stringify(toDos));
@@ -106,6 +131,11 @@ function Board({ boardCategory }: IBoardProps) {
           </DropArea>
         )}
       </Droppable>
+      {boardCategory === "To Do" || boardCategory === "Done" ? null : (
+        <BoardRemoveBtn onClick={() => deleteCategory(boardCategory)}>
+          Remove
+        </BoardRemoveBtn>
+      )}
     </Wrapper>
   );
 }

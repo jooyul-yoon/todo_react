@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { IToDo, toDoState } from "../../../atoms";
 import Board from "./Board";
 import Navigator from "../../Navigator";
-import Trash from "./Trash";
+import Footer from "./Footer";
 
 const Wrapper = styled.div`
   background-color: ${(props) => props.theme.cardColor};
@@ -111,7 +111,7 @@ function Trello() {
             return <Board key={category} boardCategory={category} />;
           })}
         </Wrapper>
-        <Trash />
+        <Footer />
       </DragDropContext>
     </>
   );
