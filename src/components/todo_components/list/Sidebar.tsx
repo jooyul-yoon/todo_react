@@ -1,3 +1,4 @@
+import React from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -87,7 +88,6 @@ function Sidebar() {
         if (cat !== deleteCat)
           copyToDos = { ...copyToDos, [cat]: [] as IToDo[] };
       });
-      console.log("CT", Object.keys(copyToDos));
       return { ...copyToDos };
     });
     setCategory("All");
@@ -125,4 +125,4 @@ function Sidebar() {
   );
 }
 
-export default Sidebar;
+export default React.memo(Sidebar);

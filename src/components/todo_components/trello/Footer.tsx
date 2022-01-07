@@ -11,10 +11,11 @@ const Wrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 60px;
-  padding: 0 20px;
+  padding: 0 10vw;
 `;
 const Container = styled.div`
-  width: 20vw;
+  width: 60px;
+  height: 60px;
   /* height: 100px; */
   display: flex;
   justify-content: center;
@@ -22,12 +23,12 @@ const Container = styled.div`
 `;
 const NewBoardForm = styled.form``;
 const NewBoardInput = styled.input`
-  width: 75vw;
+  width: 50vw;
   background-color: ${(props) => props.theme.cardColor};
   color: whitesmoke;
   font-size: 15px;
   padding: 15px 20px;
-  border-radius: 10px;
+  border-radius: 5px;
   border: none;
   outline: none;
   ::placeholder {

@@ -1,4 +1,4 @@
-import { Droppable } from "react-beautiful-dnd";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import { IToDo, toDoState } from "../../../atoms";
 import DraggableCard from "./DraggableCard";
@@ -10,6 +10,9 @@ interface IArea {
   isDraggingOver: Boolean;
   isDraggingFromThisWith: Boolean;
 }
+const ListContainer = styled.li<{ isDragging: Boolean }>`
+  /* transition: 1s; */
+`;
 const Wrapper = styled.ul`
   display: flex;
   align-items: center;
@@ -18,25 +21,11 @@ const Wrapper = styled.ul`
   margin: 0 15px;
   width: 180px;
   border-radius: 5px;
-  min-height: 50vh;
 `;
 const Title = styled.div`
   padding: 10px 0;
   font-weight: bold;
   color: ${(props) => props.theme.blackColor};
-`;
-const DropArea = styled.div<IArea>`
-  width: inherit;
-  border-radius: 5px;
-  background-color: ${(props) =>
-    props.isDraggingOver
-      ? "pink"
-      : props.isDraggingFromThisWith
-      ? "blue"
-      : "transparent"};
-  height: 100%;
-  padding: 10px;
-  transition: background-color 0.3s ease-in-out;
 `;
 const Form = styled.form`
   display: flex;
@@ -56,25 +45,41 @@ const Form = styled.form`
     }
   }
 `;
+const Container = styled.div`
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+`;
+const DropArea = styled.div<IArea>`
+  min-height: 100px;
+  border-radius: 5px;
+  background-color: ${(props) =>
+    props.isDraggingOver
+      ? "pink"
+      : props.isDraggingFromThisWith
+      ? "blue"
+      : "transparent"};
+  padding: 10px;
+  transition: background-color 0.3s ease-in-out;
+`;
 const BoardRemoveBtn = styled.button`
   width: 100%;
-  background-color: transparent;
-  color: transparent;
+  background-color: ${(props) => props.theme.accentColor};
+  color: ${(props) => props.theme.accentColor};
   border: none;
-  border-radius: inherit;
+  border-radius: 5px;
   padding: 5px 0;
   transition: 0.5s;
-  font-weight: bold;
   :hover {
-    background-color: ${(props) => props.theme.accentColor};
     color: ${(props) => props.theme.cardColor};
   }
 `;
 interface IBoardProps {
   boardCategory: string;
+  index: number;
 }
 
-function Board({ boardCategory }: IBoardProps) {
+function Board({ boardCategory, index }: IBoardProps) {
   const [toDos, setToDos] = useRecoilState(toDoState);
   const { register, setValue, handleSubmit } = useForm<IToDo>();
   const onValid = ({ text }: any) => {
@@ -95,48 +100,63 @@ function Board({ boardCategory }: IBoardProps) {
         if (cat !== deleteCat)
           copyToDos = { ...copyToDos, [cat]: [] as IToDo[] };
       });
-      console.log("CT", Object.keys(copyToDos));
       return { ...copyToDos };
     });
   };
   localStorage.setItem("toDos", JSON.stringify(toDos));
 
   return (
-    <Wrapper>
-      <Title>{boardCategory}</Title>
-      <Form onSubmit={handleSubmit(onValid)}>
-        <input
-          {...register("text", { required: true })}
-          type="text"
-          placeholder="Add a task"
-        />
-      </Form>
-      <Droppable droppableId={boardCategory}>
-        {(magic, snapshot) => (
-          <DropArea
-            isDraggingOver={snapshot.isDraggingOver}
-            isDraggingFromThisWith={Boolean(snapshot.draggingFromThisWith)}
-            ref={magic.innerRef}
-            {...magic.droppableProps}
-          >
-            {toDos[boardCategory].map((toDo, index) => (
-              <DraggableCard
-                key={toDo.id}
-                id={toDo.id}
-                toDo={toDo.text}
-                index={index}
+    <Draggable draggableId={boardCategory} index={index}>
+      {(magic, snapshot) => (
+        <ListContainer
+          isDragging={snapshot.isDragging}
+          ref={magic.innerRef}
+          {...magic.draggableProps}
+          {...magic.dragHandleProps}
+        >
+          <Wrapper>
+            <Title>{boardCategory}</Title>
+            <Form onSubmit={handleSubmit(onValid)}>
+              <input
+                {...register("text", { required: true })}
+                type="text"
+                placeholder="Add a task"
+                autoComplete="off"
               />
-            ))}
-            {magic.placeholder /* List Size stays */}
-          </DropArea>
-        )}
-      </Droppable>
-      {boardCategory === "To Do" || boardCategory === "Done" ? null : (
-        <BoardRemoveBtn onClick={() => deleteCategory(boardCategory)}>
-          Remove
-        </BoardRemoveBtn>
+            </Form>
+            <Container>
+              <Droppable droppableId={boardCategory} type="task">
+                {(magic, snapshot) => (
+                  <DropArea
+                    isDraggingOver={snapshot.isDraggingOver}
+                    isDraggingFromThisWith={Boolean(
+                      snapshot.draggingFromThisWith
+                    )}
+                    ref={magic.innerRef}
+                    {...magic.droppableProps}
+                  >
+                    {toDos[boardCategory].map((toDo, index) => (
+                      <DraggableCard
+                        key={toDo.id}
+                        id={toDo.id}
+                        toDo={toDo.text}
+                        index={index}
+                      />
+                    ))}
+                    {magic.placeholder /* List Size stays */}
+                  </DropArea>
+                )}
+              </Droppable>
+              {boardCategory === "To Do" || boardCategory === "Done" ? null : (
+                <BoardRemoveBtn onClick={() => deleteCategory(boardCategory)}>
+                  Remove
+                </BoardRemoveBtn>
+              )}
+            </Container>
+          </Wrapper>
+        </ListContainer>
       )}
-    </Wrapper>
+    </Draggable>
   );
 }
 export default React.memo(Board);
