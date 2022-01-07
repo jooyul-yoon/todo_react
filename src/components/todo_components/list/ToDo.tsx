@@ -7,14 +7,14 @@ const ToDoCard = styled.li`
   justify-content: space-between;
   align-items: center;
   background: ${(props) => props.theme.cardColor};
-  margin: 1px 0;
+  margin: 2px 0;
   padding: 10px 5px;
   border-radius: 5px;
   font-size: 13px;
-  height: 50px;
   span {
     margin-left: 10px;
     color: ${(props) => props.theme.textColor};
+    font-size: 15px;
   }
   button {
     margin-left: 10px;
@@ -87,7 +87,11 @@ function ToDo({ text, id }: IToDo) {
             <option>Select</option>
             {Object.keys(toDos).map((newCat) => {
               if (newCat === "All" || newCat === currCat) return null;
-              return <option value={newCat}>{newCat}</option>;
+              return (
+                <option key={newCat} value={newCat}>
+                  {newCat}
+                </option>
+              );
             })}
           </SelectStyle>
           <button onClick={onDelete}>Delete</button>

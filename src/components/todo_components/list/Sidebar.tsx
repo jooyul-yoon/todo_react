@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   align-items: center;
   border: 4px solid white;
   outline: none;
-  width: 20vw;
+  max-width: 150px;
   padding: 10px 0;
   background-color: ${(props) => props.theme.boardColor};
   transition: 0.5s;
@@ -24,7 +24,7 @@ const Wrapper = styled.div`
   }
   input {
     font-size: 15px;
-    width: 20vw;
+    width: 100%;
     outline: none;
     color: ${(props) => props.theme.bgColor};
   }
@@ -93,7 +93,6 @@ function Sidebar() {
     setCategory("All");
   };
 
-  console.log(toDos);
   return (
     <Wrapper>
       <form onSubmit={handleSubmit(onValid, onInvalid)}>
