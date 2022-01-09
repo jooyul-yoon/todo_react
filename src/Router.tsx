@@ -6,11 +6,11 @@ function Router() {
   return (
     <BrowserRouter>
       <Switch>
+        <Route path="/todo/trello">
+          <Trello />
+        </Route>
         <Route path="/todo">
           <ToDoList />
-        </Route>
-        <Route path="/trello">
-          <Trello />
         </Route>
       </Switch>
     </BrowserRouter>

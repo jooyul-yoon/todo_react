@@ -59,7 +59,7 @@ function Navigator() {
           <Link to={"/todo"}>
             <img src={TaskIcon} alt="todoIcon" />
           </Link>
-          <Link to={"/trello"}>
+          <Link to={"/todo/trello"}>
             <img src={TableIcon} alt="todoIcon" />
           </Link>
         </TabContainer>
