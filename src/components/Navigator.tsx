@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import TableIcon from "../img/table.png";
 import TaskIcon from "../img/task.png";
-import logo from "../img/logo.svg";
+import todo from "../img/to-do.png";
 
 const Header = styled.header`
   background-color: #fff;
@@ -11,7 +11,7 @@ const Header = styled.header`
   position: sticky;
   top: 0;
   z-index: 100;
-  padding: 0 10vw;
+  max-height: 80px;
   transition: 0.5s;
 `;
 const NavContainer = styled.nav`
@@ -19,13 +19,14 @@ const NavContainer = styled.nav`
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem 1rem;
+  padding: 1rem 0;
 `;
 const HomeIconContainer = styled.div`
   display: flex;
   align-items: center;
+  margin-left: 10vw;
   img {
-    height: 43px;
+    max-height: 50px;
     margin-right: 10px;
   }
   span {
@@ -35,6 +36,7 @@ const HomeIconContainer = styled.div`
   }
 `;
 const TabContainer = styled.div`
+  margin-right: 10vw;
   a {
     margin-left: 20px;
     color: ${(props) => props.theme.blackColor};
@@ -50,8 +52,8 @@ function Navigator() {
     <Header>
       <NavContainer>
         <HomeIconContainer>
-          <img src={logo} alt="react" />
-          <span>React Master</span>
+          <img src={todo} alt="react" />
+          {/* <span>To Do</span> */}
         </HomeIconContainer>
         <TabContainer>
           <Link to={"/todo"}>

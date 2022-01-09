@@ -14,15 +14,15 @@ interface IArea {
 const Wrapper = styled.ul`
   background-color: ${(props) => props.theme.cardColor};
   display: flex;
-  border-radius: 5px;
+  max-width: 80vw;
   margin: 20px 10vw 5px 10vw;
   padding: 20px;
+  border-radius: 5px;
 `;
 const DropArea = styled.div<IArea>`
   transition: 0.5s;
   display: flex;
   width: 100%;
-  height: 100%;
   overflow-x: auto;
   &::-webkit-scrollbar {
     display: none;
@@ -32,7 +32,7 @@ const DropArea = styled.div<IArea>`
 function Trello() {
   const [toDos, setToDos] = useRecoilState(toDoState);
   const onDragEnd = (info: DropResult) => {
-    // console.log(info);
+    console.log(info);
     const { destination, source, draggableId, type } = info;
     if (destination == null) return;
     /* Define Categories and index */
@@ -146,6 +146,7 @@ function Trello() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Navigator />
+      <Footer />
       <Wrapper>
         <Droppable droppableId={"boards"} direction="horizontal" type="board">
           {(magic, snapshot) => (
@@ -170,7 +171,6 @@ function Trello() {
           )}
         </Droppable>
       </Wrapper>
-      <Footer />
     </DragDropContext>
   );
 }

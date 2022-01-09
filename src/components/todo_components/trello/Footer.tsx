@@ -1,7 +1,7 @@
 import React from "react";
 import { Droppable } from "react-beautiful-dnd";
 import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { IToDo, toDoState } from "../../../atoms";
 import DeleteIcon from "../../../img/trash.png";
@@ -12,18 +12,19 @@ const Wrapper = styled.div`
   align-items: center;
   height: 60px;
   padding: 0 10vw;
+  margin: 20px 0;
 `;
 const Container = styled.div`
   width: 60px;
   height: 60px;
-  /* height: 100px; */
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 const NewBoardForm = styled.form``;
 const NewBoardInput = styled.input`
-  width: 50vw;
+  font-size: 10px;
+  width: 70vw;
   background-color: ${(props) => props.theme.cardColor};
   color: whitesmoke;
   font-size: 15px;
@@ -39,17 +40,16 @@ const DeleteBtn = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: red;
+  background-color: #ffd9df;
   width: 50px;
   height: 50px;
   border-radius: 25px;
-  box-shadow: black 0px 0px 3px;
   transition: background-color 0.3s, width 0.3s, height 0.3s, border-radius 0.3s;
   img {
     max-width: 30px;
   }
   :hover {
-    background-color: pink;
+    background-color: white;
     width: 60px;
     height: 60px;
     border-radius: 30px;
@@ -61,13 +61,9 @@ interface IForm {
 }
 function Footer() {
   const { register, handleSubmit, formState, setValue } = useForm();
-  const [toDos, setToDos] = useRecoilState(toDoState);
+  const setToDos = useSetRecoilState(toDoState);
   const onValid = ({ newCat }: IForm) => {
     setValue("newCat", "");
-    if (Object.keys(toDos).length > 10) {
-      alert("You exceeded");
-      return;
-    }
     setToDos((oldToDos) => {
       return { ...oldToDos, [newCat]: [] as IToDo[] };
     });
@@ -90,8 +86,9 @@ function Footer() {
           placeholder="+ Add new category"
         />
       </NewBoardForm>
+
       <Container>
-        <Droppable droppableId="delete">
+        <Droppable droppableId="delete" type="task">
           {(magic) => (
             <DeleteBtn ref={magic.innerRef} {...magic.droppableProps}>
               <img src={DeleteIcon} alt="delete" />
@@ -103,4 +100,4 @@ function Footer() {
   );
 }
 
-export default Footer;
+export default React.memo(Footer);
