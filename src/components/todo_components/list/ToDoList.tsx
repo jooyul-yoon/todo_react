@@ -16,7 +16,7 @@ const Container = styled.div`
   align-items: center;
   width: 400px;
   margin: 20px auto;
-  min-height: 100vh;
+  min-height: 100%;
 `;
 const Header = styled.div`
   margin-bottom: 10px;

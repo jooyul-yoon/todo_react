@@ -1,5 +1,8 @@
 import { atom, selector } from "recoil";
 
+/* Crypto tracker */
+export const isDarkAtom = atom({ key: "isDark", default: true });
+
 /* To Do List */
 export interface IToDo {
   text: string;

@@ -5,7 +5,7 @@ import styled from "styled-components";
 const Card = styled.li<{ isDragging: Boolean }>`
   display: flex;
   background-color: ${(props) =>
-    props.isDragging ? props.theme.redColor : props.theme.cardColor};
+    props.isDragging ? props.theme.coinDecrease : props.theme.cardColor};
   width: 100%;
   margin: 2px 0;
   padding: 5px;
