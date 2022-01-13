@@ -9,6 +9,7 @@ import { ReactComponent as MoonIcon } from "../img/moon.svg";
 import { ReactComponent as SunIcon } from "../img/sun.svg";
 import { useRecoilState } from "recoil";
 import { isDarkAtom } from "../atoms";
+import { useState } from "react";
 
 const Header = styled.header`
   background-color: ${(props) => props.theme.navBgColor};
@@ -42,20 +43,53 @@ const HomeIconContainer = styled.div`
   }
 `;
 const TabContainer = styled.div`
-  margin-right: 10vw;
+  display: flex;
+  margin-right: 5vw;
+  justify-content: center;
+  align-items: center;
   a {
-    margin-left: 20px;
     color: ${(props) => props.theme.blackColor};
     font-size: 1rem;
     img {
-      height: 27px;
+      margin-left: 20px;
+      height: 30px;
+    }
+  }
+`;
+const ToDoIcon = styled.div`
+  img {
+    margin-left: 20px;
+    height: 30px;
+  }
+`;
+const DropDown = styled.div<{ isShowing: Boolean }>`
+  margin-top: 21px;
+  position: fixed;
+  display: ${(props) => (props.isShowing ? "flex" : "none")};
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: ${(props) => props.theme.whiteColor};
+  box-shadow: 0px 2px 4px rgb(0 0 0 / 10%);
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    img {
+      margin: 5px 0;
+      width: 20px;
+      height: 20px;
+    }
+    :hover {
+      background-color: ${(props) => props.theme.lightGrayColor};
     }
   }
 `;
 const BtnContainer = styled.div`
-  position: absolute;
-  right: 0;
-  margin: 5px;
+  /* position: absolute;
+  right: 0; */
+  margin-left: 20px;
 `;
 const ThemeToggle = styled.button<{ isDark: boolean }>`
   background: ${({ theme }) => theme.gradient};
@@ -67,13 +101,13 @@ const ThemeToggle = styled.button<{ isDark: boolean }>`
   justify-content: space-between;
   margin: 0 auto;
   overflow: hidden;
-  padding: 0.3rem;
+  padding: 0.25rem 0.4rem;
   position: relative;
-  width: 4rem;
-  height: 2rem;
+  /* width: 4rem; */
+  height: 30px;
   svg {
     height: auto;
-    width: 1.3rem;
+    width: 1.1rem;
     transition: all 0.3s linear;
     // sun icon
     &:first-child {
@@ -90,35 +124,45 @@ const ThemeToggle = styled.button<{ isDark: boolean }>`
 `;
 
 function Navigator() {
+  const [show, setShow] = useState(false);
   const [isDark, setDarkAtom] = useRecoilState(isDarkAtom);
-  const toggleTheme = () => setDarkAtom((prev) => !prev);
+  const toggleTheme = () => setDarkAtom((prev: any) => !prev);
+  const toggleShow = () => setShow(!show);
+  const closeShow = () => setShow(false);
+  localStorage.setItem("isDark  ", JSON.stringify(isDark));
   return (
     <Header>
-      <NavContainer>
+      <NavContainer onMouseLeave={closeShow}>
         <HomeIconContainer>
-          <img src={todo} alt="react" />
-          {/* <span>To Do</span> */}
+          <Link to={"/react"}>
+            <img src={todo} alt="react" />
+          </Link>
         </HomeIconContainer>
         <TabContainer>
           <Link to={"/react/crypto_tracker"}>
             <img src={coins} alt="coins" />
           </Link>
-          <Link to={"/react/todo"}>
-            <img src={TaskIcon} alt="todoIcon" />
-          </Link>
-          <Link to={"/react/trello"}>
-            <img src={TableIcon} alt="todoIcon" />
-          </Link>
+          <ToDoIcon>
+            <img onClick={toggleShow} src={todo} alt="todo" />
+            <DropDown isShowing={show}>
+              <Link to={"/react/todo"}>
+                <img src={TaskIcon} alt="task" />
+              </Link>
+              <Link to={"/react/trello"}>
+                <img src={TableIcon} alt="trello" />
+              </Link>
+            </DropDown>
+          </ToDoIcon>
           <Link to={"/react/animation"}>
             <img src={framer} alt="framer" />
           </Link>
+          <BtnContainer>
+            <ThemeToggle isDark={isDark} onClick={toggleTheme}>
+              <SunIcon />
+              <MoonIcon />
+            </ThemeToggle>
+          </BtnContainer>
         </TabContainer>
-        <BtnContainer>
-          <ThemeToggle isDark={isDark} onClick={toggleTheme}>
-            <SunIcon />
-            <MoonIcon />
-          </ThemeToggle>
-        </BtnContainer>
       </NavContainer>
     </Header>
   );

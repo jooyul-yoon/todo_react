@@ -26,7 +26,7 @@ const Header = styled.div`
   padding: 0 20px;
   width: 100%;
   h1 {
-    font-size: 30px;
+    font-size: 25px;
   }
   Select {
     background: ${(props) => props.theme.cardColor};

@@ -13,11 +13,14 @@ export const darkTheme: DefaultTheme = {
   coinIncrease: "#00ff00",
   coinDecrease: "#ff4444",
 
-  boardColor: "#FCF6F5",
+  sidebarColor: "#E5E5E5",
+  boardColor: "#E5E5E5",
+  textboxColor: "white",
 
   whiteColor: "whitesmoke",
   blackColor: "#111111",
-  accentColor: "#ffc1c1",
+  lightGrayColor: "#9b9b9b",
+  accentColor: "#ff6767",
   lightAccent: "#FAEBEF", // #EFEDFF
   darkAccent: "#333D79",
 };
@@ -27,7 +30,7 @@ export const lightTheme: DefaultTheme = {
   textColor: "black",
   cardColor: "white",
 
-  navBgColor: "white  ",
+  navBgColor: "white",
   toggleBorder: "#FFF",
   gradient: "linear-gradient(#39598A, #79D7ED)",
 
@@ -35,11 +38,14 @@ export const lightTheme: DefaultTheme = {
   coinIncrease: "#00bb00",
   coinDecrease: "#ff0000",
 
-  boardColor: "#DADFE9",
+  sidebarColor: "#333D79",
+  boardColor: "white",
+  textboxColor: "white",
 
   whiteColor: "whitesmoke",
   blackColor: "#111111",
-  accentColor: "#ff7979a9",
+  lightGrayColor: "#9b9b9b",
+  accentColor: "#ffd7d7",
   lightAccent: "#FAEBEF",
   darkAccent: "#333D79",
 };

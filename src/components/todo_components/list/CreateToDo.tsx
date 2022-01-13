@@ -16,17 +16,17 @@ const AddContainer = styled.div`
 const AddInput = styled.input`
   width: 40vw;
   background: transparent;
-  color: ${(props) => props.theme.accentColor};
+  color: ${(props) => props.theme.lightGrayColor};
   border: none;
   outline: none;
   ::placeholder {
-    color: ${(props) => props.theme.accentColor};
+    color: ${(props) => props.theme.lightGrayColor};
   }
 `;
 const AddBtn = styled.button`
   background: transparent;
   border: none;
-  color: ${(props) => props.theme.accentColor};
+  color: ${(props) => props.theme.lightGrayColor};
   margin-right: 5px;
   cursor: pointer;
 `;

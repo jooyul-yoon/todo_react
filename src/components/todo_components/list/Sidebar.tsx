@@ -8,17 +8,17 @@ import sidebarBtn from "../../../img/next.png";
 const SideMenu = styled.div<{ isOpen: Boolean }>`
   position: fixed;
   top: 80px;
-  left: ${(props) => (props.isOpen ? 0 : "-195px")};
+  left: ${(props) => (props.isOpen ? 0 : "-200px")};
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: left;
   align-items: center;
-  border: 4px solid white;
+  /* border: 4px solid white; */
   outline: none;
   width: 200px;
   padding: 10px 0;
-  background-color: ${(props) => props.theme.boardColor};
+  background-color: ${(props) => props.theme.sidebarColor};
   transition: 0.5s;
   input {
     width: 100%;
@@ -26,15 +26,13 @@ const SideMenu = styled.div<{ isOpen: Boolean }>`
     border: none;
     padding: 10px 20px;
     text-align: left;
-  }
-  input {
     font-size: 15px;
     width: 100%;
     outline: none;
     color: ${(props) => props.theme.bgColor};
-  }
-  @media only screen and (min-width: 400px) {
-    dispaly: none;
+    ::placeholder {
+      color: ${(props) => props.theme.accentColor};
+    }
   }
 `;
 const CategoryArea = styled.div`
@@ -48,10 +46,14 @@ const CategoryArea = styled.div`
 const CategoryBtn = styled.button`
   width: 100%;
   background-color: transparent;
+  color: ${(props) => props.theme.bgColor};
   border: none;
   padding: 10px 20px;
   text-align: left;
   font-size: 15px;
+  :hover {
+    color: ${(props) => props.theme.textColor};
+  }
 `;
 const RemoveBtn = styled.button`
   background-color: transparent;
@@ -64,22 +66,21 @@ const RemoveBtn = styled.button`
   cursor: pointer;
   :hover {
     background-color: #ff00006e;
+    color: ${(props) => props.theme.textColor};
   }
 `;
 const SideBtn = styled.button<{ isOpen: Boolean }>`
-  background-color: transparent;
+  background-color: ${(props) => props.theme.accentColor};
   position: fixed;
   top: 50vh;
-  left: ${(props) => (props.isOpen ? "180px" : "2px")};
+  left: ${(props) => (props.isOpen ? "180px" : "0px")};
   padding: 20px 0px;
   border: none;
   transition: 0.5s;
+  cursor: pointer;
   img {
     height: 20px;
     transform: ${(props) => (props.isOpen ? "rotate(0.5turn)" : "0")};
-  }
-  :hover {
-    background-color: ${(props) => props.theme.accentColor};
   }
 `;
 interface IForm {
@@ -87,7 +88,9 @@ interface IForm {
 }
 
 function Sidebar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(
+    JSON.parse(localStorage.getItem("isOpen") as string) ?? true
+  );
   const [toDos, setToDos] = useRecoilState(toDoState);
   const setCategory = useSetRecoilState(categoryAtom);
   const { register, handleSubmit, setValue, formState } = useForm<IForm>();
@@ -105,24 +108,43 @@ function Sidebar() {
       return { ...oldToDos, [newCat]: [] as IToDo[] };
     });
   };
-  const onInvalid = () => console.log(formState.errors);
+  const onInvalid = () => {
+    console.log(formState?.errors);
+    const errors = formState?.errors["newCat"];
+    const message = errors?.message;
+    if (message!) alert(message);
+  };
   const deleteCategory = (deleteCat: string) => {
     setToDos((oldToDos) => {
       let copyToDos = {};
-      return { ...copyToDos };
+      let toDostoRemove: IToDo[] = [];
+      Object.keys(oldToDos).forEach((cat) => {
+        if (cat !== deleteCat)
+          copyToDos = { ...copyToDos, [cat]: [...oldToDos[cat]] as IToDo[] };
+      });
+      oldToDos[deleteCat].forEach((toDo) => toDostoRemove.push(toDo));
+      const allToDos = oldToDos["All"].filter(
+        (toDo) => !toDostoRemove.includes(toDo)
+      );
+      return { ...copyToDos, All: allToDos };
     });
     setCategory("All");
   };
   const sideOnClick = () => {
     setIsOpen(!isOpen);
   };
+  localStorage.setItem("isOpen", JSON.stringify(isOpen));
   return (
     <>
       <SideMenu isOpen={isOpen}>
         <form onSubmit={handleSubmit(onValid, onInvalid)}>
           <input
             autoComplete="off"
-            {...register("newCat", { required: true })}
+            {...register("newCat", {
+              required: true,
+              minLength: { value: 4, message: "Too short" },
+              maxLength: { value: 10, message: "Too long" },
+            })}
             placeholder="+ New list"
           />
         </form>

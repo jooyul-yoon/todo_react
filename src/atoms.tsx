@@ -1,7 +1,10 @@
 import { atom, selector } from "recoil";
 
 /* Crypto tracker */
-export const isDarkAtom = atom({ key: "isDark", default: true });
+export const isDarkAtom = atom({
+  key: "isDark",
+  default: JSON.parse(localStorage.getItem("isDark") as string) ?? false,
+});
 
 /* To Do List */
 export interface IToDo {

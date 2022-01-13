@@ -19,11 +19,14 @@ declare module "styled-components" {
     coinIncrease: string;
     coinDecrease: string;
 
-    /* Trello */
+    /* To-do, Trello */
+    sidebarColor: string;
     boardColor: string;
+    textboxColor: string;
 
     whiteColor: string;
     blackColor: string;
+    lightGrayColor: string;
     lightAccent: string;
     darkAccent: string;
     accentColor: string;

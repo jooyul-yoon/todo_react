@@ -10,7 +10,7 @@ interface IArea {
   isDraggingOver: Boolean;
   isDraggingFromThisWith: Boolean;
 }
-const ListContainer = styled.li<{ isDragging: Boolean }>`
+const ContainerLi = styled.li<{ isDragging: Boolean }>`
   /* transition: 1s; */
 `;
 const Wrapper = styled.ul`
@@ -19,60 +19,61 @@ const Wrapper = styled.ul`
   flex-direction: column;
   background-color: ${(props) => props.theme.boardColor};
   margin: 0 15px;
-  width: 180px;
+  width: 150px;
   border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 `;
 const Title = styled.div`
-  padding: 10px 0;
-  font-weight: bold;
-  color: ${(props) => props.theme.blackColor};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0 3px 0;
+  color: black;
+  span {
+    padding-left: 10px;
+  }
+  button {
+    text-align: center;
+    padding-right: 10px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
 `;
 const Form = styled.form`
   display: flex;
   width: 100%;
-  padding: 0 16px;
+  padding: 0 10px 5px 15px;
   input {
-    align-items: center;
     background-color: transparent;
+    align-items: center;
     border: none;
     outline: none;
     width: 100%;
-    color: ${(props) => props.theme.bgColor};
-
-    ::placeholder {
-      color: ${(props) => props.theme.bgColor};
-      font-weight: bold;
-    }
+    height: 25px;
+    color: gray;
+    font-size: 12px;
   }
 `;
 const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
+  padding: 0;
 `;
 const DropArea = styled.div<IArea>`
-  min-height: 100px;
-  border-radius: 5px;
+  min-height: 44px;
+  /* border-radius: 5px; */
   background-color: ${(props) =>
     props.isDraggingOver
-      ? "pink"
+      ? props.theme.accentColor
       : props.isDraggingFromThisWith
-      ? "blue"
-      : "transparent"};
-  padding: 10px;
+      ? props.theme.cardColor
+      : props.theme.whiteColor};
+  margin: 5px 10px;
+  padding: 3px 5px;
   transition: background-color 0.3s ease-in-out;
-`;
-const BoardRemoveBtn = styled.button`
-  width: 100%;
-  background-color: ${(props) => props.theme.accentColor};
-  color: ${(props) => props.theme.accentColor};
-  border: none;
-  border-radius: 5px;
-  padding: 5px 0;
-  transition: 0.5s;
-  :hover {
-    color: ${(props) => props.theme.cardColor};
-  }
 `;
 interface IBoardProps {
   boardCategory: string;
@@ -96,11 +97,16 @@ function Board({ boardCategory, index }: IBoardProps) {
   const deleteCategory = (deleteCat: string) => {
     setToDos((oldToDos) => {
       let copyToDos = {};
+      let toDostoRemove: IToDo[] = [];
       Object.keys(oldToDos).forEach((cat) => {
         if (cat !== deleteCat)
-          copyToDos = { ...copyToDos, [cat]: [] as IToDo[] };
+          copyToDos = { ...copyToDos, [cat]: [...oldToDos[cat]] as IToDo[] };
       });
-      return { ...copyToDos };
+      oldToDos[boardCategory].forEach((toDo) => toDostoRemove.push(toDo));
+      const allToDos = oldToDos["All"].filter(
+        (toDo) => !toDostoRemove.includes(toDo)
+      );
+      return { ...copyToDos, All: allToDos };
     });
   };
   localStorage.setItem("toDos", JSON.stringify(toDos));
@@ -108,22 +114,19 @@ function Board({ boardCategory, index }: IBoardProps) {
   return (
     <Draggable draggableId={boardCategory} index={index}>
       {(magic, snapshot) => (
-        <ListContainer
+        <ContainerLi
           isDragging={snapshot.isDragging}
           ref={magic.innerRef}
           {...magic.draggableProps}
           {...magic.dragHandleProps}
         >
           <Wrapper>
-            <Title>{boardCategory}</Title>
-            <Form onSubmit={handleSubmit(onValid)}>
-              <input
-                {...register("text", { required: true })}
-                type="text"
-                placeholder="Add a task"
-                autoComplete="off"
-              />
-            </Form>
+            <Title>
+              <span>{boardCategory}</span>
+              {boardCategory === "To Do" || boardCategory === "Done" ? null : (
+                <button onClick={() => deleteCategory(boardCategory)}>x</button>
+              )}
+            </Title>
             <Container>
               <Droppable droppableId={boardCategory} type="task">
                 {(magic, snapshot) => (
@@ -147,14 +150,17 @@ function Board({ boardCategory, index }: IBoardProps) {
                   </DropArea>
                 )}
               </Droppable>
-              {boardCategory === "To Do" || boardCategory === "Done" ? null : (
-                <BoardRemoveBtn onClick={() => deleteCategory(boardCategory)}>
-                  Remove
-                </BoardRemoveBtn>
-              )}
             </Container>
+            <Form onSubmit={handleSubmit(onValid)}>
+              <input
+                {...register("text", { required: true })}
+                type="text"
+                placeholder="+ Add a task"
+                autoComplete="off"
+              />
+            </Form>
           </Wrapper>
-        </ListContainer>
+        </ContainerLi>
       )}
     </Draggable>
   );

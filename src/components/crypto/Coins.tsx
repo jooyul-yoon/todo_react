@@ -6,7 +6,6 @@ import styled from "styled-components";
 import { fetchCoins } from "../../api";
 import Loader from "./Loader";
 import Navigator from "../Navigator";
-import coins from "../../img/coins.png";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -19,15 +18,9 @@ const Header = styled.header`
   justify-content: center;
   align-items: center;
 `;
-const HomeIcon = styled.div`
-  margin-right: 10px;
-  img {
-    height: 40px;
-  }
-`;
 const Title = styled.h1`
   color: ${(props) => props.theme.textColor};
-  font-size: 30px;
+  font-size: 26px;
   margin: 20px 0;
 `;
 const CoinsList = styled.ul`
@@ -99,11 +92,6 @@ function Coins() {
           <title>Crypto Tracker</title>
         </Helmet>
         <Header>
-          <HomeIcon>
-            <Link to={"/react/crypto_tracker"}>
-              <img src={coins}></img>
-            </Link>
-          </HomeIcon>
           <Title>Crypto</Title>
         </Header>
         {isLoading ? (
