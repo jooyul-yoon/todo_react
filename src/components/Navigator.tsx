@@ -58,6 +58,7 @@ const TabContainer = styled.div`
 `;
 const ToDoIcon = styled.div`
   img {
+    cursor: pointer;
     margin-left: 20px;
     height: 30px;
   }
