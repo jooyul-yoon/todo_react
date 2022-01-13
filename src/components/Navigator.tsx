@@ -37,7 +37,7 @@ const HomeIconContainer = styled.div`
     margin-right: 10px;
   }
   span {
-    font-size: 1.8rem;
+    font-size: 1.3rem;
     color: ${(props) => props.theme.blackColor};
     margin-right: 0;
   }
@@ -136,7 +136,8 @@ function Navigator() {
       <NavContainer onMouseLeave={closeShow}>
         <HomeIconContainer>
           <Link to={"/react"}>
-            <img src={todo} alt="react" />
+            <span>React Master Class</span>
+            {/* <img src={todo} alt="react" /> */}
           </Link>
         </HomeIconContainer>
         <TabContainer>
