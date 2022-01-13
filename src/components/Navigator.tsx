@@ -64,7 +64,7 @@ const ToDoIcon = styled.div`
   }
 `;
 const DropDown = styled.div<{ isShowing: Boolean }>`
-  margin-top: 21px;
+  margin-top: 10px;
   position: fixed;
   display: ${(props) => (props.isShowing ? "flex" : "none")};
   flex-direction: column;
@@ -125,9 +125,7 @@ const ThemeToggle = styled.button<{ isDark: boolean }>`
 `;
 
 function Navigator() {
-  const [show, setShow] = useState(
-    JSON.parse(localStorage.getItem("isDark") as string) ?? false
-  );
+  const [show, setShow] = useState(false);
   const [isDark, setDarkAtom] = useRecoilState(isDarkAtom);
   const toggleTheme = () => setDarkAtom((prev: any) => !prev);
   const toggleShow = () => setShow(!show);
