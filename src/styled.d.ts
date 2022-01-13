@@ -24,6 +24,9 @@ declare module "styled-components" {
     boardColor: string;
     textboxColor: string;
 
+    /* Framer-motion */
+    boxContainerColor: string;
+
     whiteColor: string;
     blackColor: string;
     lightGrayColor: string;

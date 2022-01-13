@@ -17,6 +17,8 @@ export const darkTheme: DefaultTheme = {
   boardColor: "#E5E5E5",
   textboxColor: "white",
 
+  boxContainerColor: "#ffd7d7",
+
   whiteColor: "whitesmoke",
   blackColor: "#111111",
   lightGrayColor: "#9b9b9b",
@@ -41,6 +43,8 @@ export const lightTheme: DefaultTheme = {
   sidebarColor: "#333D79",
   boardColor: "white",
   textboxColor: "white",
+
+  boxContainerColor: "whitesmoke",
 
   whiteColor: "whitesmoke",
   blackColor: "#111111",
