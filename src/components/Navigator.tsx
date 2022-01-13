@@ -3,7 +3,7 @@ import styled from "styled-components";
 import TableIcon from "../img/table.png";
 import TaskIcon from "../img/task.png";
 import todo from "../img/to-do.png";
-import framer from "../img/framer.png";
+import framer from "../img/motion.png";
 import coins from "../img/coins.png";
 import { ReactComponent as MoonIcon } from "../img/moon.svg";
 import { ReactComponent as SunIcon } from "../img/sun.svg";

@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import Navigator from "../../Navigator";
+import { motion } from "framer-motion";
+
+// export const MyComponent=({isVisible})=>(<motion.div animate={{opacity: isVisible? 1: 0}} />)
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -23,6 +26,7 @@ function Framer() {
       <Navigator />
       <Wrapper>
         <Box />
+        <motion.div>Hi</motion.div>
       </Wrapper>
     </>
   );
