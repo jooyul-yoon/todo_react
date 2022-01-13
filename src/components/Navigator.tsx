@@ -125,12 +125,14 @@ const ThemeToggle = styled.button<{ isDark: boolean }>`
 `;
 
 function Navigator() {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(
+    JSON.parse(localStorage.getItem("isDark") as string) ?? false
+  );
   const [isDark, setDarkAtom] = useRecoilState(isDarkAtom);
   const toggleTheme = () => setDarkAtom((prev: any) => !prev);
   const toggleShow = () => setShow(!show);
   const closeShow = () => setShow(false);
-  localStorage.setItem("isDark  ", JSON.stringify(isDark));
+  localStorage.setItem("isDark", JSON.stringify(isDark));
   return (
     <Header>
       <NavContainer onMouseLeave={closeShow}>
