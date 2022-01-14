@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Navigator from "../../Navigator";
 import {
+  AnimatePresence,
   motion,
   useMotionValue,
   useTransform,
@@ -93,6 +94,12 @@ const svgVar: Variants = {
     fill: "rgba(255, 255, 255, 1)",
   },
 };
+const AniPresenceVar: Variants = {
+  initial: { opacity: 0, scale: 0 },
+  visible: { opacity: 1, scale: 1, rotateZ: 360 },
+  leaving: { opacity: 0, scale: 0, y: 20 },
+};
+
 function Framer() {
   const boxContainerRef = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
@@ -108,14 +115,30 @@ function Framer() {
   );
   const { scrollY, scrollYProgress } = useViewportScroll();
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.5]);
+  const [showing, setShowing] = useState(false);
+  const toggleShowing = () => setShowing(!showing);
 
   useEffect(() => {
     // scrollY.onChange(() => console.log(scrollY.get(), scrollYProgress.get()));
   }, [scrollY, scrollYProgress]);
+
   return (
     <>
       <Navigator />
       <Wrapper>
+        <BoxContainer>
+          <AnimatePresence>
+            {showing ? (
+              <Box
+                variants={AniPresenceVar}
+                initial="initial"
+                animate="visible"
+                exit="leaving"
+              />
+            ) : null}
+          </AnimatePresence>
+          <button onClick={toggleShowing}>Click</button>
+        </BoxContainer>
         <BoxContainer>
           <Box
             initial={{ scale: 0 }}

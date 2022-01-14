@@ -24,9 +24,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const NewBoardForm = styled.form<{ createOn: Boolean }>`
-  display: ${(props) => (props.createOn ? "block" : "none")};
-`;
+const NewBoardForm = styled.form``;
 const NewBoardInput = styled.input`
   font-size: 10px;
   width: 20vw;
@@ -117,22 +115,21 @@ function Footer() {
           },
         }}
       >
-        <NewBoardForm
-          onSubmit={handleSubmit(onValid, onInvalid)}
-          createOn={isOpen}
-        >
-          <NewBoardInput
-            autoComplete="off"
-            {...register("newCat", {
-              required: true,
-              minLength: { value: 4, message: "Too short" },
-              maxLength: { value: 10, message: "Too long" },
-              // pattern: /[^a-zA-z]/gi,
-            })}
-            type="text"
-            placeholder="+ Add new category"
-          />
-        </NewBoardForm>
+        {isOpen ? (
+          <NewBoardForm onSubmit={handleSubmit(onValid, onInvalid)}>
+            <NewBoardInput
+              autoComplete="off"
+              {...register("newCat", {
+                required: true,
+                minLength: { value: 4, message: "Too short" },
+                maxLength: { value: 10, message: "Too long" },
+                // pattern: /[^a-zA-z]/gi,
+              })}
+              type="text"
+              placeholder="+ Add new category"
+            />
+          </NewBoardForm>
+        ) : null}
       </Modal>
 
       <Container>
