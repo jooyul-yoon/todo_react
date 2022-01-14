@@ -1,7 +1,13 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import Navigator from "../../Navigator";
-import { motion, Variants } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  useViewportScroll,
+  Variants,
+} from "framer-motion";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -9,7 +15,7 @@ const Wrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 `;
-const BoxContainer = styled.div`
+const BoxContainer = styled(motion.div)`
   place-self: center;
   width: 25vw;
   height: 25vw;
@@ -18,7 +24,7 @@ const BoxContainer = styled.div`
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  background-color: ${(props) => props.theme.boxContainerColor};
+  background: linear-gradient(135deg, rgb(238, 0, 153), rgb(221, 0, 238));
   border-radius: 10px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `;
@@ -71,6 +77,22 @@ const circleVar: Variants = {
 
 function Framer() {
   const boxContainerRef = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const rotateZ = useTransform(x, [-200, 200], [-360, 360]);
+  const background = useTransform(
+    x,
+    [-200, 0, 200],
+    [
+      "linear-gradient(135deg, rgb(0, 222, 238), rgb(0, 36, 238))",
+      "linear-gradient(135deg, rgb(238, 0, 153), rgb(221, 0, 238))",
+      "linear-gradient(135deg, rgb(202, 238, 0), rgb(0, 238, 127))",
+    ]
+  );
+  const { scrollY, scrollYProgress } = useViewportScroll();
+
+  useEffect(() => {
+    // scrollY.onChange(() => console.log(scrollY.get(), scrollYProgress.get()));
+  }, [scrollY, scrollYProgress]);
   return (
     <>
       <Navigator />
@@ -96,13 +118,23 @@ function Framer() {
         <BoxContainer ref={boxContainerRef}>
           <Box
             drag
-            dragElastic={0}
+            dragElastic={0.1}
             dragConstraints={boxContainerRef}
             variants={boxVar3}
             whileHover="hover"
             whileTap="click"
             whileDrag="drag"
           />
+        </BoxContainer>
+        <BoxContainer style={{ background }}>
+          <Box
+            style={{ x, rotateZ, scale: scrollYProgress }}
+            drag="x"
+            dragSnapToOrigin
+          />
+        </BoxContainer>
+        <BoxContainer>
+          <Box />
         </BoxContainer>
       </Wrapper>
     </>
