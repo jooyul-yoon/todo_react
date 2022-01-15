@@ -40,7 +40,18 @@ const Box = styled(motion.div)`
   border-radius: 15px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   text-align: center;
-  position: absolute;
+  /* position: absolute; */
+`;
+const FlexBox = styled(motion.div)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  width: 100px;
+  height: 100px;
+  background-color: #ececec;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `;
 const Circle = styled(motion.div)`
   width: 36px;
@@ -128,6 +139,8 @@ function Framer() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.5]);
   const [visible, setVisible] = useState(1);
   const [back, setBack] = useState(false);
+  const [clicked, setClicked] = useState(false);
+  const toggleClicked = () => setClicked((prev) => !prev);
   const next = () => {
     setBack(false);
     setVisible((prev) => (prev === 10 ? 1 : prev + 1));
@@ -144,6 +157,16 @@ function Framer() {
     <>
       <Navigator />
       <Wrapper>
+        <BoxContainer onClick={toggleClicked}>
+          <FlexBox
+            style={{
+              justifyContent: clicked ? "flex-start" : "center",
+              alignItems: clicked ? "flex-start" : "center",
+            }}
+          >
+            <Circle layout />
+          </FlexBox>
+        </BoxContainer>
         <BoxContainer>
           <AnimatePresence exitBeforeEnter custom={back}>
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) =>
