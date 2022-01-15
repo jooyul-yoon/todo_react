@@ -24,6 +24,7 @@ const BoxContainer = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   overflow: hidden;
   background: linear-gradient(135deg, rgb(238, 0, 153), rgb(221, 0, 238));
   border-radius: 10px;
@@ -38,6 +39,8 @@ const Box = styled(motion.div)`
   background-color: #ececec;
   border-radius: 15px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  text-align: center;
+  position: absolute;
 `;
 const Circle = styled(motion.div)`
   width: 36px;
@@ -94,10 +97,18 @@ const svgVar: Variants = {
     fill: "rgba(255, 255, 255, 1)",
   },
 };
-const AniPresenceVar: Variants = {
-  initial: { opacity: 0, scale: 0 },
-  visible: { opacity: 1, scale: 1, rotateZ: 360 },
-  leaving: { opacity: 0, scale: 0, y: 20 },
+const SliderVar: Variants = {
+  entry: (isBack: Boolean) => ({
+    opacity: 0,
+    scale: 0,
+    x: isBack ? -100 : 100,
+  }),
+  center: (isBack: Boolean) => ({ opacity: 1, scale: 1, x: 0 }),
+  leaving: (isBack: Boolean) => ({
+    opacity: 0,
+    scale: 0,
+    x: isBack ? 100 : -100,
+  }),
 };
 
 function Framer() {
@@ -115,9 +126,16 @@ function Framer() {
   );
   const { scrollY, scrollYProgress } = useViewportScroll();
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.5]);
-  const [showing, setShowing] = useState(false);
-  const toggleShowing = () => setShowing(!showing);
-
+  const [visible, setVisible] = useState(1);
+  const [back, setBack] = useState(false);
+  const next = () => {
+    setBack(false);
+    setVisible((prev) => (prev === 10 ? 1 : prev + 1));
+  };
+  const prev = () => {
+    setBack(true);
+    setVisible((prev) => (prev === 1 ? 10 : prev - 1));
+  };
   useEffect(() => {
     // scrollY.onChange(() => console.log(scrollY.get(), scrollYProgress.get()));
   }, [scrollY, scrollYProgress]);
@@ -127,17 +145,26 @@ function Framer() {
       <Navigator />
       <Wrapper>
         <BoxContainer>
-          <AnimatePresence>
-            {showing ? (
-              <Box
-                variants={AniPresenceVar}
-                initial="initial"
-                animate="visible"
-                exit="leaving"
-              />
-            ) : null}
+          <AnimatePresence exitBeforeEnter custom={back}>
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) =>
+              i === visible ? (
+                <Box
+                  custom={back}
+                  key={visible}
+                  variants={SliderVar}
+                  initial="entry"
+                  animate="center"
+                  exit="leaving"
+                >
+                  {visible}
+                </Box>
+              ) : null
+            )}
           </AnimatePresence>
-          <button onClick={toggleShowing}>Click</button>
+          <div style={{ position: "relative", top: 70 }}>
+            <button onClick={prev}>prev</button>
+            <button onClick={next}>next</button>
+          </div>
         </BoxContainer>
         <BoxContainer>
           <Box
