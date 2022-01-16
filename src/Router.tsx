@@ -2,9 +2,10 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ToDoList from "./components/todo_components/list/ToDoList";
 import Trello from "./components/todo_components/trello/Trello";
 import Navigator from "./components/Navigator";
-import Framer from "./components/todo_components/framer/Framer";
 import Coin from "./components/crypto/Coin";
 import Coins from "./components/crypto/Coins";
+import Practice1 from "./components/todo_components/framer/Practice1";
+import Practice2 from "./components/todo_components/framer/Practice2";
 
 function Router() {
   return (
@@ -22,8 +23,11 @@ function Router() {
         <Route path="/react/trello">
           <Trello />
         </Route>
-        <Route path="/react/animation">
-          <Framer />
+        <Route path="/react/animation/practice1">
+          <Practice1 />
+        </Route>
+        <Route path="/react/animation/practice2">
+          <Practice2 />
         </Route>
         <Route path="/react">
           <Navigator />

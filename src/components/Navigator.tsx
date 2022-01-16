@@ -15,9 +15,9 @@ const Header = styled.header`
   background-color: ${(props) => props.theme.navBgColor};
   box-shadow: 0px 2px 4px rgb(0 0 0 / 10%);
   font-family: "Google Sans", "Roboto", sans-serif;
-  /* position: sticky;
+  position: sticky;
   top: 0;
-  z-index: 100; */
+  z-index: 100;
   max-height: 80px;
   transition: 0.5s;
 `;
@@ -64,26 +64,34 @@ const ToDoIcon = styled.div`
   }
 `;
 const DropDown = styled.div<{ isShowing: Boolean }>`
-  margin-top: 10px;
-  position: fixed;
+  margin-top: 15px;
+  position: absolute;
   display: ${(props) => (props.isShowing ? "flex" : "none")};
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: ${(props) => props.theme.whiteColor};
-  box-shadow: 0px 2px 4px rgb(0 0 0 / 10%);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   a {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 70px;
+    width: 90px;
+    padding: 3px 5px;
+    :hover {
+      background-color: ${(props) => props.theme.lightGrayColor};
+      color: white;
+    }
     img {
-      margin: 5px 0;
+      margin: 6px 0;
       width: 20px;
       height: 20px;
     }
-    :hover {
-      background-color: ${(props) => props.theme.lightGrayColor};
+    span {
+      text-align: center;
+      padding: 10px 0px;
+      font-size: 13px;
     }
   }
 `;
@@ -125,11 +133,22 @@ const ThemeToggle = styled.button<{ isDark: boolean }>`
 `;
 
 function Navigator() {
-  const [show, setShow] = useState(false);
+  const [framerShow, setFramerShow] = useState(false);
+  const [todoShow, setTodoShow] = useState(false);
   const [isDark, setDarkAtom] = useRecoilState(isDarkAtom);
   const toggleTheme = () => setDarkAtom((prev: any) => !prev);
-  const toggleShow = () => setShow(!show);
-  const closeShow = () => setShow(false);
+  const toggleTodoShow = () => {
+    setFramerShow(false);
+    setTodoShow(!todoShow);
+  };
+  const toggleFramerShow = () => {
+    setTodoShow(false);
+    setFramerShow(!framerShow);
+  };
+  const closeShow = () => {
+    setTodoShow(false);
+    setFramerShow(false);
+  };
   localStorage.setItem("isDark", JSON.stringify(isDark));
   return (
     <Header>
@@ -145,8 +164,8 @@ function Navigator() {
             <img src={coins} alt="coins" />
           </Link>
           <ToDoIcon>
-            <img onClick={toggleShow} src={todo} alt="todo" />
-            <DropDown isShowing={show}>
+            <img onClick={toggleTodoShow} src={todo} alt="todo" />
+            <DropDown isShowing={todoShow}>
               <Link to={"/react/todo"}>
                 <img src={TaskIcon} alt="task" />
               </Link>
@@ -155,9 +174,17 @@ function Navigator() {
               </Link>
             </DropDown>
           </ToDoIcon>
-          <Link to={"/react/animation"}>
-            <img src={framer} alt="framer" />
-          </Link>
+          <ToDoIcon>
+            <img onClick={toggleFramerShow} src={framer} alt="framer" />
+            <DropDown isShowing={framerShow}>
+              <Link to={"/react/animation/practice1"}>
+                <span>Animations</span>
+              </Link>
+              <Link to={"/react/animation/practice2"}>
+                <span>Layout</span>
+              </Link>
+            </DropDown>
+          </ToDoIcon>
           <BtnContainer>
             <ThemeToggle isDark={isDark} onClick={toggleTheme}>
               <SunIcon />
